@@ -1,0 +1,44 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# gatsby files
+.cache/
+
+# make sure not to load intellij settings
+.settings
+.idea
+target
+lib
+keepid.iml
+log.txt
+.github
+.classpath
+.project
+
+# secrets
+session-store
+./session-store
+session-store*
+session-store/*
+.env
+
+keepid-google-kms.json
+test_encryption_key.json
+
+# don't track the keys property file
+secretkeys.properties
