@@ -2,25 +2,20 @@ package TestUtils;
 
 import Config.DeploymentLevel;
 import Config.MongoConfig;
-import Organization.Organization;
 import Security.SecurityUtils;
 import User.User;
+import User.UserType;
 import Validation.ValidationException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import java.util.ArrayList;
+
 import java.util.Date;
-import java.util.List;
 
 public class EntityFactory {
   public static final long TEST_DATE = 1577862000000L; // Jan 1 2020
 
   public PartialUser createUser() {
     return new PartialUser();
-  }
-
-  public PartialOrganization createOrganization() {
-    return new PartialOrganization();
   }
 
   public static class PartialUser implements PartialObject<User> {
@@ -36,10 +31,9 @@ public class EntityFactory {
     private String zipcode = "19104";
     private String username = "testUser123";
     private String password = "testUser123";
-    private UserType userType = null;
     private boolean twoFactorOn = false;
     private Date creationDate = new Date(TEST_DATE);
-    private List<IpObject> logInHistory = new ArrayList<>();
+    private UserType userType;
 
     @Override
     public User build() {
@@ -60,7 +54,6 @@ public class EntityFactory {
                 username,
                 password,
                 userType);
-        newUser.setLogInHistory(logInHistory);
         newUser.setCreationDate(creationDate);
         return newUser;
       } catch (ValidationException e) {
@@ -156,108 +149,6 @@ public class EntityFactory {
     }
 
     public PartialUser withCreationDate(Date creationDate) {
-      this.creationDate = creationDate;
-      return this;
-    }
-
-    public PartialUser withLoginHistory(List<IpObject> logInHistory) {
-      this.logInHistory = logInHistory;
-      return this;
-    }
-  }
-
-  public static class PartialOrganization implements PartialObject<Organization> {
-    private String orgName = "Broad Street Ministry Test Org Name";
-    private String orgWebsite = "testOrgWebsite.com";
-    private String orgEIN = "123456789";
-    private String orgStreetAddress = "311 Broad Street";
-    private String orgCity = "Philadelphia";
-    private String orgState = "PA";
-    private String orgZipcode = "19104";
-    private String orgEmail = "testOrgEmail@keep.id";
-    private String orgPhoneNumber = "1234567890";
-    private Date creationDate = new Date(TEST_DATE);
-
-    @Override
-    public Organization build() {
-      try {
-        Organization newOrg =
-            new Organization(
-                orgName,
-                orgWebsite,
-                orgEIN,
-                orgStreetAddress,
-                orgCity,
-                orgState,
-                orgZipcode,
-                orgEmail,
-                orgPhoneNumber);
-        newOrg.setCreationDate(creationDate);
-        return newOrg;
-      } catch (ValidationException e) {
-        throw new IllegalArgumentException("Illegal Param: " + e.toString());
-      }
-    }
-
-    @Override
-    public Organization buildAndPersist() {
-      Organization organization = this.build();
-      MongoDatabase testDB = MongoConfig.getDatabase(DeploymentLevel.TEST);
-      if (testDB == null) {
-        throw new IllegalStateException("testDB must not be null");
-      }
-      MongoCollection<Organization> orgCollection =
-          testDB.getCollection("organization", Organization.class);
-      orgCollection.insertOne(organization);
-      return organization;
-    }
-
-    public PartialOrganization withAddress(String address) {
-      this.orgStreetAddress = address;
-      return this;
-    }
-
-    public PartialOrganization withCity(String city) {
-      this.orgCity = city;
-      return this;
-    }
-
-    public PartialOrganization withState(String state) {
-      this.orgState = state;
-      return this;
-    }
-
-    public PartialOrganization withZipcode(String zipcode) {
-      this.orgZipcode = zipcode;
-      return this;
-    }
-
-    public PartialOrganization withEmail(String email) {
-      this.orgEmail = email;
-      return this;
-    }
-
-    public PartialOrganization withEIN(String ein) {
-      this.orgEIN = ein;
-      return this;
-    }
-
-    public PartialOrganization withOrgName(String orgName) {
-      this.orgName = orgName;
-      return this;
-    }
-
-    public PartialOrganization withWebsite(String website) {
-      this.orgWebsite = website;
-      return this;
-    }
-
-    public PartialOrganization withPhoneNumber(String phoneNumber) {
-      this.orgPhoneNumber = phoneNumber;
-      return this;
-    }
-
-    public PartialOrganization withCreationDate(Date creationDate) {
       this.creationDate = creationDate;
       return this;
     }

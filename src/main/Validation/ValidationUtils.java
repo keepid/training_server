@@ -1,5 +1,6 @@
 package Validation;
 
+import User.UserType;
 import org.bson.types.ObjectId;
 
 import java.net.URL;

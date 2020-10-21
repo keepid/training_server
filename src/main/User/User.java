@@ -3,13 +3,13 @@ package User;
 import Logger.LogFactory;
 import Validation.ValidationException;
 import Validation.ValidationUtils;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
+
+import java.util.Date;
+import java.util.Objects;
 
 public class User extends Document {
   private ObjectId id;
@@ -58,9 +58,6 @@ public class User extends Document {
 
   @BsonProperty(value = "creationDate")
   private Date creationDate;
-
-  @BsonProperty(value = "logInHistory")
-  private List<IpObject> logInHistory;
 
   public User() {}
 
@@ -185,10 +182,6 @@ public class User extends Document {
     return this.creationDate;
   }
 
-  public List<IpObject> getLogInHistory() {
-    return this.logInHistory;
-  }
-
   /** **************** SETTERS ********************* */
   public User setFirstName(String firstName) {
     this.firstName = firstName;
@@ -262,11 +255,6 @@ public class User extends Document {
 
   public User setUserType(UserType userType) {
     this.userType = userType;
-    return this;
-  }
-
-  public User setLogInHistory(List<IpObject> logInHistory) {
-    this.logInHistory = logInHistory;
     return this;
   }
 

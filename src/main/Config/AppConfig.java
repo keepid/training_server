@@ -1,8 +1,9 @@
 package Config;
 
+import Database.UserDao;
+import Database.UserDaoFactory;
 import Logger.LogFactory;
 import User.UserController;
-import com.mongodb.client.MongoDatabase;
 import io.javalin.Javalin;
 import io.javalin.core.compression.Brotli;
 import io.javalin.core.compression.Gzip;
@@ -15,8 +16,7 @@ public class AppConfig {
   public static Javalin appFactory(DeploymentLevel deploymentLevel) {
     System.setProperty("logback.configurationFile", "../Logger/Resources/logback.xml");
     Javalin app = AppConfig.createJavalinApp(deploymentLevel);
-    MongoConfig.getMongoClient();
-    MongoDatabase db = MongoConfig.getDatabase(deploymentLevel);
+    UserDao userDao = UserDaoFactory.create(deploymentLevel);
     setApplicationHeaders(app);
 
     /* Utilities to pass to route handlers */
@@ -24,7 +24,7 @@ public class AppConfig {
     l.createLogger();
 
     // We need to instantiate the controllers with the database.
-    UserController userController = new UserController(db);
+    UserController userController = new UserController(userDao);
 
     /* -------------- DUMMY PATHS ------------------------- */
     app.get("/", ctx -> ctx.result("Welcome to the Keep.id Server"));

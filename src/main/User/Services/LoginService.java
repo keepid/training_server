@@ -7,26 +7,20 @@ import Security.SecurityUtils;
 import User.User;
 import User.UserMessage;
 import Validation.ValidationUtils;
-import com.mongodb.client.MongoDatabase;
 import org.slf4j.Logger;
 
-import java.util.*;
-
-import static com.mongodb.client.model.Filters.eq;
+import java.util.Objects;
+import java.util.Optional;
 
 public class LoginService implements Service {
   private Logger logger;
-  private MongoDatabase db;
+  private UserDao userDao;
   private String username;
   private String password;
   private User user;
 
-  public LoginService(
-      MongoDatabase db,
-      Logger logger,
-      String username,
-      String password) {
-    this.db = db;
+  public LoginService(UserDao userDao, Logger logger, String username, String password) {
+    this.userDao = userDao;
     this.logger = logger;
     this.username = username;
     this.password = password;
@@ -38,12 +32,11 @@ public class LoginService implements Service {
       logger.info("Invalid username and/or password");
       return UserMessage.AUTH_FAILURE;
     }
-    User user = UserDao.findOneUserOrNull(db, this.username);
-    if (user == null) {
+    Optional<User> optionalUser = userDao.get(this.username);
+    if (optionalUser.isEmpty()) {
       return UserMessage.AUTH_FAILURE;
     }
-    Objects.requireNonNull(user);
-    this.user = user;
+    this.user = optionalUser.get();
     if (!verifyPassword(this.password, user.getPassword())) {
       return UserMessage.AUTH_FAILURE;
     }
