@@ -9,15 +9,17 @@ import java.util.*;
 public class UserDaoTestImpl implements UserDao {
   Map<String, User> userMap;
 
-  public UserDaoTestImpl(DeploymentLevel deploymentLevel){
-    if(deploymentLevel != DeploymentLevel.TEST){
-      throw new IllegalStateException("Should not run in memory test database in production or staging");
+  public UserDaoTestImpl(DeploymentLevel deploymentLevel) {
+    if (deploymentLevel != DeploymentLevel.IN_MEMORY) {
+      throw new IllegalStateException(
+          "Should not run in memory test database in production or staging");
     }
-    userMap = new HashMap<String, User>();
+    userMap = new LinkedHashMap<String, User>();
   }
+
   @Override
   public Optional<User> get(String username) {
-     return Optional.ofNullable(userMap.get(username));
+    return Optional.ofNullable(userMap.get(username));
   }
 
   @Override
@@ -28,7 +30,7 @@ public class UserDaoTestImpl implements UserDao {
   @Override
   public Optional<User> get(ObjectId id) {
     for (User user : userMap.values()) {
-      if(user.getId().equals(id)){
+      if (user.getId().equals(id)) {
         return Optional.of(user);
       }
     }
@@ -62,6 +64,6 @@ public class UserDaoTestImpl implements UserDao {
 
   @Override
   public void save(User user) {
-
+    userMap.put(user.getUsername(), user);
   }
 }

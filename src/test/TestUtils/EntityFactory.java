@@ -1,20 +1,17 @@
 package TestUtils;
 
-import Config.DeploymentLevel;
-import Config.MongoConfig;
+import Database.Dao;
 import Security.SecurityUtils;
 import User.User;
 import User.UserType;
 import Validation.ValidationException;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 
 import java.util.Date;
 
 public class EntityFactory {
   public static final long TEST_DATE = 1577862000000L; // Jan 1 2020
 
-  public PartialUser createUser() {
+  public static PartialUser createUser() {
     return new PartialUser();
   }
 
@@ -33,7 +30,7 @@ public class EntityFactory {
     private String password = "testUser123";
     private boolean twoFactorOn = false;
     private Date creationDate = new Date(TEST_DATE);
-    private UserType userType;
+    private UserType userType = UserType.Admin;
 
     @Override
     public User build() {
@@ -62,14 +59,9 @@ public class EntityFactory {
     }
 
     @Override
-    public User buildAndPersist() {
+    public User buildAndPersist(Dao<User> dao) {
       User user = this.build();
-      MongoDatabase testDB = MongoConfig.getDatabase(DeploymentLevel.TEST);
-      if (testDB == null) {
-        throw new IllegalStateException("testDB must not be null");
-      }
-      MongoCollection<User> userCollection = testDB.getCollection("user", User.class);
-      userCollection.insertOne(user);
+      dao.save(user);
       return user;
     }
 
@@ -157,6 +149,6 @@ public class EntityFactory {
   public interface PartialObject<T> {
     public T build();
 
-    public T buildAndPersist();
+    public T buildAndPersist(Dao<T> dao);
   }
 }

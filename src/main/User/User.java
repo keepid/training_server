@@ -3,7 +3,6 @@ package User;
 import Logger.LogFactory;
 import Validation.ValidationException;
 import Validation.ValidationUtils;
-import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -11,7 +10,7 @@ import org.slf4j.Logger;
 import java.util.Date;
 import java.util.Objects;
 
-public class User extends Document {
+public class User {
   private ObjectId id;
 
   @BsonProperty(value = "firstName")
@@ -359,8 +358,7 @@ public class User extends Document {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     User user = (User) o;
-    return Objects.equals(this.id, user.id)
-        && Objects.equals(this.firstName, user.firstName)
+    return Objects.equals(this.firstName, user.firstName)
         && Objects.equals(this.lastName, user.lastName)
         && Objects.equals(this.birthDate, user.birthDate)
         && Objects.equals(this.email, user.email)

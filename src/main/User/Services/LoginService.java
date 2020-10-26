@@ -34,7 +34,7 @@ public class LoginService implements Service {
     }
     Optional<User> optionalUser = userDao.get(this.username);
     if (optionalUser.isEmpty()) {
-      return UserMessage.AUTH_FAILURE;
+      return UserMessage.USER_NOT_FOUND;
     }
     this.user = optionalUser.get();
     if (!verifyPassword(this.password, user.getPassword())) {
@@ -67,20 +67,5 @@ public class LoginService implements Service {
   public String getUsername() {
     Objects.requireNonNull(user);
     return user.getUsername();
-  }
-
-  public String getFirstName() {
-    Objects.requireNonNull(user);
-    return user.getFirstName();
-  }
-
-  public String getLastName() {
-    Objects.requireNonNull(user);
-    return user.getLastName();
-  }
-
-  public String getFullName() {
-    Objects.requireNonNull(user);
-    return user.getFirstName() + " " + user.getLastName();
   }
 }

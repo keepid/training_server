@@ -3,7 +3,6 @@ package TestUtils;
 import Config.AppConfig;
 import Config.DeploymentLevel;
 import Config.MongoConfig;
-import com.mongodb.client.MongoDatabase;
 import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
@@ -20,7 +19,6 @@ public class TestUtils {
     if (app == null) {
       try {
         MongoConfig.getMongoClient();
-        MongoDatabase db = MongoConfig.getDatabase(DeploymentLevel.TEST);
       } catch (Exception e) {
         System.err.println(e.getStackTrace());
         System.exit(0);

@@ -14,13 +14,12 @@ import java.util.Optional;
 import static com.mongodb.client.model.Filters.eq;
 
 public class UserDaoImpl implements UserDao {
-  MongoCollection<User> userCollection;
+  private MongoCollection<User> userCollection;
 
   public UserDaoImpl(DeploymentLevel deploymentLevel) {
-    MongoConfig.getMongoClient();
     MongoDatabase db = MongoConfig.getDatabase(deploymentLevel);
     if (db == null) {
-      throw new IllegalStateException("Database cannot be null");
+      throw new IllegalStateException("DB cannot be null");
     }
     userCollection = db.getCollection("user", User.class);
   }

@@ -42,9 +42,10 @@ public class MongoConfig {
 
   public static MongoDatabase getDatabase(DeploymentLevel deploymentLevel) {
     if (client == null) {
-      throw new IllegalStateException("Please start a client before getting a database");
+      startConnection();
     }
     switch (deploymentLevel) {
+      case IN_MEMORY:
       case TEST:
         return client.getDatabase(MONGO_DB_TEST);
       case STAGING:
