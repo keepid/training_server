@@ -27,11 +27,22 @@ public class LoginServiceUnitTests {
   public void userNotFound() {
     EntityFactory.createUser()
         .withUsername("username1")
-        .withPassword("password123")
+        .withPasswordToHash("password123")
         .buildAndPersist(userDao);
     LoginService loginService = new LoginService(userDao, logger, "username2", "password2");
     Message message = loginService.executeAndGetResponse();
     assertEquals(message, UserMessage.USER_NOT_FOUND);
+  }
+
+  @Test
+  public void success_auth() {
+    EntityFactory.createUser()
+        .withUsername("username1")
+        .withPasswordToHash("password123")
+        .buildAndPersist(userDao);
+    LoginService loginService = new LoginService(userDao, logger, "username1", "password123");
+    Message message = loginService.executeAndGetResponse();
+    assertEquals(message, UserMessage.AUTH_SUCCESS);
   }
 
   @Test

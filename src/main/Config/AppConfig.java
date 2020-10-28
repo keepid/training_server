@@ -3,7 +3,10 @@ package Config;
 import Database.UserDao;
 import Database.UserDaoFactory;
 import Logger.LogFactory;
+import User.User;
 import User.UserController;
+import User.UserType;
+import Validation.ValidationException;
 import io.javalin.Javalin;
 import io.javalin.core.compression.Brotli;
 import io.javalin.core.compression.Gzip;
@@ -17,6 +20,7 @@ public class AppConfig {
     System.setProperty("logback.configurationFile", "../Logger/Resources/logback.xml");
     Javalin app = AppConfig.createJavalinApp(deploymentLevel);
     UserDao userDao = UserDaoFactory.create(deploymentLevel);
+    loadDao(userDao);
     setApplicationHeaders(app);
 
     /* Utilities to pass to route handlers */
@@ -30,6 +34,7 @@ public class AppConfig {
     app.get("/", ctx -> ctx.result("Welcome to the Keep.id Server"));
 
     /* -------------- USER AUTHENTICATION/USER RELATED ROUTES-------------- */
+    app.post("/get-user-info", userController.getUserInfo);
     app.post("/login", userController.loginUser);
     app.get("/logout", userController.logout);
     return app;
@@ -54,6 +59,7 @@ public class AppConfig {
       case PRODUCTION:
         port = SERVER_PORT;
         break;
+      case IN_MEMORY:
       case TEST:
         port = SERVER_TEST_PORT;
         break;
@@ -96,5 +102,31 @@ public class AppConfig {
                   });
             })
         .start(port);
+  }
+
+  // load the database with a single user when we start
+  public static void loadDao(UserDao userDao) {
+    User user = null;
+    try {
+      user =
+          new User(
+              "Connor",
+              "Chong",
+              "11-10-1997",
+              "sometestemail@keep.id",
+              "1231231234",
+              "Keep.id",
+              "123 Keepid drive",
+              "Keepid City",
+              "PA",
+              "19104",
+              false,
+              "user1234",
+              "user1234",
+              UserType.Admin);
+    } catch (ValidationException e) {
+      e.printStackTrace();
+    }
+    userDao.save(user);
   }
 }
