@@ -2,19 +2,6 @@ package Security;
 
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.commons.lang3.RandomStringUtils;
-
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
-import java.security.Key;
-import java.security.SecureRandom;
-import java.util.Date;
-import java.util.Objects;
 
 /*
    Methods for handling JSON Web Tokens (JWTs)
@@ -31,17 +18,6 @@ public class SecurityUtils {
     SUCCESS,
     FAILURE,
     ERROR;
-  }
-
-  public static String generateRandomStringId() {
-    return RandomStringUtils.random(
-        ID_LENGTH,
-        ID_START_CHARACTERS,
-        ID_END_CHARACTERS,
-        INCLUDE_LETTERS,
-        INCLUDE_NUMBERS,
-        ID_CHARACTERS,
-        new SecureRandom());
   }
 
   // Tests testPass against realPassHash, the hash of the real password.

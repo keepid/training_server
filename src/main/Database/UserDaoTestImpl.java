@@ -2,9 +2,12 @@ package Database;
 
 import Config.DeploymentLevel;
 import User.User;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.bson.types.ObjectId;
-
-import java.util.*;
 
 public class UserDaoTestImpl implements UserDao {
   Map<String, User> userMap;
@@ -14,7 +17,7 @@ public class UserDaoTestImpl implements UserDao {
       throw new IllegalStateException(
           "Should not run in memory test database in production or staging");
     }
-    userMap = new LinkedHashMap<String, User>();
+    userMap = new LinkedHashMap<>();
   }
 
   @Override

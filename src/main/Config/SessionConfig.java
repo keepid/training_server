@@ -1,11 +1,10 @@
 package Config;
 
+import java.util.Objects;
 import org.eclipse.jetty.nosql.mongodb.MongoSessionDataStoreFactory;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
 import org.eclipse.jetty.server.session.SessionCache;
 import org.eclipse.jetty.server.session.SessionHandler;
-
-import java.util.Objects;
 
 public class SessionConfig {
   private static SessionHandler sessionHandler;
@@ -25,6 +24,7 @@ public class SessionConfig {
     SessionCache sessionCache = new DefaultSessionCache(sessionHandler);
     switch (deploymentLevel) {
       case IN_MEMORY:
+        // PUT IN MEMORY SESSION STORE HERE
       case TEST:
         sessionCache.setSessionDataStore(
             mongoDataStoreFactory(MONGO_DB_TEST, SESSION_DB_NAME_TEST)
