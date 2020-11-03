@@ -7,10 +7,8 @@ import Security.SecurityUtils;
 import User.User;
 import User.UserMessage;
 import Validation.ValidationUtils;
-import org.slf4j.Logger;
-
-import java.util.Objects;
 import java.util.Optional;
+import org.slf4j.Logger;
 
 public class LoginService implements Service {
   private Logger logger;
@@ -62,10 +60,5 @@ public class LoginService implements Service {
         }
     }
     return false;
-  }
-
-  public String getUsername() {
-    Objects.requireNonNull(user);
-    return user.getUsername();
   }
 }

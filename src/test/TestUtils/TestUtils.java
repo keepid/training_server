@@ -1,5 +1,7 @@
 package TestUtils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import Config.AppConfig;
 import Config.DeploymentLevel;
 import Config.MongoConfig;
@@ -7,8 +9,6 @@ import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import org.json.JSONObject;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtils {
   private static final int SERVER_TEST_PORT = Integer.parseInt(System.getenv("TEST_PORT"));
@@ -23,6 +23,7 @@ public class TestUtils {
         System.err.println(e.getStackTrace());
         System.exit(0);
       }
+      // never deploy with higher than TEST
       app = AppConfig.appFactory(DeploymentLevel.TEST);
     }
   }

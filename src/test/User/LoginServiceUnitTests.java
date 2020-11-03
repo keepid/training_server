@@ -1,17 +1,18 @@
 package User;
 
+import static org.junit.Assert.assertEquals;
+
 import Config.DeploymentLevel;
 import Config.Message;
 import Database.UserDao;
-import Database.UserDaoTestImpl;
+import Database.UserDaoFactory;
 import Logger.LogFactory;
 import TestUtils.EntityFactory;
 import User.Services.LoginService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
-
-import static org.junit.Assert.assertEquals;
 
 public class LoginServiceUnitTests {
   public UserDao userDao;
@@ -19,8 +20,13 @@ public class LoginServiceUnitTests {
 
   @Before
   public void initialize() {
-    this.userDao = new UserDaoTestImpl(DeploymentLevel.IN_MEMORY);
+    this.userDao = UserDaoFactory.create(DeploymentLevel.IN_MEMORY);
     this.logger = new LogFactory().createLogger();
+  }
+
+  @After
+  public void reset() {
+    userDao.clear();
   }
 
   @Test

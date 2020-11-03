@@ -33,7 +33,7 @@ public class UserController {
         Message response = loginService.executeAndGetResponse();
         logger.info(response.toString() + response.getErrorDescription());
         if (response == UserMessage.AUTH_SUCCESS) {
-          ctx.sessionAttribute("username", loginService.getUsername());
+          ctx.sessionAttribute("username", username);
         }
         ctx.result(response.toResponseString());
       };
