@@ -40,6 +40,7 @@ public class AppConfig {
     return app;
   }
 
+  // Setting some basic application headers to protect against web vulnerabilities
   public static void setApplicationHeaders(Javalin app) {
     app.before(
         ctx -> {
@@ -69,22 +70,14 @@ public class AppConfig {
     }
     return Javalin.create(
             config -> {
-              config.asyncRequestTimeout =
-                  ASYNC_TIME_OUT; // timeout for async requests (default is 0, no timeout)
+              config.asyncRequestTimeout = ASYNC_TIME_OUT; // timeout for async requests
               config.autogenerateEtags = false; // auto generate etags (default is false)
               config.compressionStrategy(
-                  new Brotli(4),
-                  new Gzip(6)); // set the compression strategy and levels - since 3.2.0
+                  new Brotli(4), new Gzip(6)); // set the compression strategy and levels
               config.contextPath = "/"; // context path for the http servlet (default is "/")
-              config.defaultContentType =
-                  "text/plain"; // content type to use if no content type is set (default is
-              // "text/plain")
-
+              config.defaultContentType = "text/plain"; // content type to use
               config.enableCorsForAllOrigins(); // enable cors for all origins
-
-              //              config.enableDevLogging(); // enable extensive development logging for
-              // http and
-              // websocket
+              config.enableDevLogging(); // enable extensive development logging
               config.enforceSsl = false;
               config.logIfServerNotStarted = true;
               config.showJavalinBanner = false;

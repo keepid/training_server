@@ -1,5 +1,9 @@
 package Database;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import Config.DeploymentLevel;
 import TestUtils.EntityFactory;
 import User.User;
@@ -7,8 +11,6 @@ import com.google.common.collect.ImmutableList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class UserDaoImplUnitTests {
   public UserDao userDao;
@@ -20,7 +22,7 @@ public class UserDaoImplUnitTests {
 
   @After
   public void reset() {
-    this.userDao.clear();
+    userDao.clear();
   }
 
   @Test

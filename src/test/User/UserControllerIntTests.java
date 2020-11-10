@@ -1,8 +1,10 @@
 package User;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import Config.DeploymentLevel;
 import Database.UserDao;
-import Database.UserDaoImpl;
+import Database.UserDaoFactory;
 import TestUtils.EntityFactory;
 import TestUtils.TestUtils;
 import kong.unirest.HttpResponse;
@@ -12,19 +14,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class UserControllerIntTests {
   UserDao userDao;
 
   @Before
   public void configureDatabase() {
     TestUtils.startServer();
-    userDao = new UserDaoImpl(DeploymentLevel.TEST);
+    // NEVER USE DEPLOYMENT LEVEL HIGHER THAN TEST
+    userDao = UserDaoFactory.create(DeploymentLevel.TEST);
   }
 
   @After
-  public void clearDatabase() {
+  public void reset() {
     userDao.clear();
     Unirest.post(TestUtils.getServerUrl() + "/logout");
   }
