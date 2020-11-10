@@ -26,6 +26,7 @@ public class UserControllerIntTests {
   @After
   public void clearDatabase() {
     userDao.clear();
+    Unirest.post(TestUtils.getServerUrl() + "/logout");
   }
 
   @Test
