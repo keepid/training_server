@@ -99,6 +99,9 @@ public class AppConfig {
 
   // load the database with a single user when we start
   public static void loadDao(UserDao userDao) {
+    if (userDao.get("user1234").isPresent()) {
+      return;
+    }
     User user = null;
     try {
       user =
